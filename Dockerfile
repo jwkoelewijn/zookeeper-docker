@@ -1,6 +1,6 @@
 FROM wurstmeister/base
 
-MAINTAINER Wurstmeister
+MAINTAINER J.W. Koelewijn
 
 ENV ZOOKEEPER_VERSION 3.4.6
 
@@ -24,8 +24,8 @@ RUN mv /opt/zookeeper-${ZOOKEEPER_VERSION}/conf/zoo_sample.cfg /opt/zookeeper-${
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 ENV ZK_HOME /opt/zookeeper-${ZOOKEEPER_VERSION}
 RUN sed  -i "s|/tmp/zookeeper|$ZK_HOME/data|g" $ZK_HOME/conf/zoo.cfg; mkdir $ZK_HOME/data
-
-ADD start-zk.sh /usr/bin/start-zk.sh 
+RUN sed  -i "s|#maxClientCnxns=60|maxClientCnxns=0|g" $ZK_HOME/conf/zoo.cfg
+ADD start-zk.sh /usr/bin/start-zk.sh
 EXPOSE 2181 2888 3888
 
 WORKDIR /opt/zookeeper-${ZOOKEEPER_VERSION}
